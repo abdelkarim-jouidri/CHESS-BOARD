@@ -11,12 +11,13 @@ public abstract class Piece {
     protected final int piecePosition;
     protected final PieceColor pieceColor;
 
-    public Piece(final int piecePosition, final PieceColor pieceColor) {
+    protected final boolean isFirstMove ;
+
+    public Piece(int piecePosition, PieceColor pieceColor) {
         this.piecePosition = piecePosition;
         this.pieceColor = pieceColor;
+        this.isFirstMove = false;
     }
-
-
 
     public abstract Collection<Move> calculateLegalMoves(Board board);
 
@@ -25,4 +26,7 @@ public abstract class Piece {
     }
 
 
+    protected boolean isFirstMove() {
+        return true;
+    }
 }
