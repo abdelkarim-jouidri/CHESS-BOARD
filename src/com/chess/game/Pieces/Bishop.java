@@ -21,9 +21,6 @@ public class Bishop extends Piece{
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<Move>();
         for(int moveCoordinate : POSSIBLE_MOVES_DIRECTION_COORDINATES){
-            if(isAtFirstColumnExcludedPosition(this.piecePosition, moveCoordinate) ||isAtEighthColumnExcludedPosition(this.piecePosition, moveCoordinate)){
-                break;
-            };
                 int destinationCoordinate = this.piecePosition;
                 while (BoardUtils.isValidCoordinate(destinationCoordinate)){
                     if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinate) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinate)){
