@@ -52,4 +52,9 @@ public class Bishop extends Piece{
     private static boolean isAtEighthColumnExcludedPosition(int currentPos, int candidateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentPos] && (candidateOffset == 9 ||candidateOffset == -7);
     }
+
+    @Override
+    public String toString() {
+        return PieceType.BISHOP.toString();
+    }
 }

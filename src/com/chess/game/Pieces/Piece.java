@@ -33,4 +33,26 @@ public abstract class Piece {
     public int getPosition() {
         return this.piecePosition;
     }
+
+    public enum PieceType{
+
+        PAWN("P"),
+        KNIGHT("N"),
+        BISHOP("B"),
+        ROOK("R"),
+        KING("K"),
+        QUEEN("Q");
+
+
+        private String pieceName;
+        PieceType(String pieceName){
+            this.pieceName = pieceName;
+        }
+
+
+        @Override
+        public String toString() {
+            return this.pieceName.toString();
+        }
+    }
 }

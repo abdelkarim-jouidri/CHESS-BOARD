@@ -3,20 +3,44 @@ package com.chess.game.Board;
 import com.chess.game.PieceColor;
 import com.chess.game.Pieces.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
 
-    private List<Tile> gameBoard;
+    private static List<Tile> gameBoard;
 
     private Collection<Piece> activeWhitePieces;
     private Collection<Piece> activeBlackPieces;
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
         this.activeWhitePieces = calculateActivePieces( this.gameBoard, PieceColor.WHITE  );
+        this.activeBlackPieces = calculateActivePieces( this.gameBoard, PieceColor.WHITE  );
+        List<Move> whitePiecesLegalMoves = calculateLegalMoves(this.activeWhitePieces);
+        List<Move> blackPiecesLegalMoves = calculateLegalMoves(this.activeBlackPieces);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0 ; i<BoardUtils.NUM_TILES ; i++){
+            String tileText = this.gameBoard.get(i).toString();
+            stringBuilder.append(String.format("%3s", tileText));
+            if((i+1)%BoardUtils.NUM_TILES_PER_ROW == 0){
+                stringBuilder.append("\n");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+
+
+    private List<Move> calculateLegalMoves(Collection<Piece> pieces) {
+        List<Move> legalMoves = new ArrayList<>();
+        for (Piece piece : pieces){
+            legalMoves.addAll(piece.calculateLegalMoves(this));
+        }
+
+        return legalMoves;
     }
 
     private static Collection<Piece> calculateActivePieces(List<Tile> gameboard , PieceColor pieceColor){
@@ -24,7 +48,7 @@ public class Board {
             for (Tile tile : gameboard){
                 if(tile.isTileOccupied()){
                     Piece pieceOnTile = tile.getPiece();
-                    if(pieceOnTile.getPieceColor() == pieceColor){
+                    if(pieceOnTile != null && pieceOnTile.getPieceColor() == pieceColor){
                         activePieces.add(pieceOnTile);
                     }
                 }
@@ -74,7 +98,7 @@ public class Board {
     return List.of(tiles);
     }
     public static Tile getTile(int tilecoordinate){
-        return null;
+        return gameBoard.get(tilecoordinate);
     }
 
 
@@ -83,6 +107,7 @@ public class Board {
         PieceColor nextMovePlayer;
 
         public Builder() {
+            this.boardConfiguration = new HashMap<>();
         }
 
         public Builder Piece(Piece piece){

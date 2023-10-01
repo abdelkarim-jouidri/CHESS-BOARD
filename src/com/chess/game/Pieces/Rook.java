@@ -23,10 +23,11 @@ public class Rook extends Piece{
             int destinationCoordinate = this.piecePosition;
             while (BoardUtils.isValidCoordinate(destinationCoordinate)){
                 destinationCoordinate += moveCoordinateOffset;
-                if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset)){
-                    break;
-                }
+
                 if (BoardUtils.isValidCoordinate(destinationCoordinate)){
+                    if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset)){
+                        break;
+                    }
                     Tile targetTile = Board.getTile(destinationCoordinate);
                     if (!targetTile.isTileOccupied()){
                         legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
@@ -44,6 +45,11 @@ public class Rook extends Piece{
         }
     return legalMoves;
 
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.ROOK.toString();
     }
 
     static boolean isAtFirstColumnExcludedPosition(int currentPos , int candidateOffset){

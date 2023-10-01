@@ -18,6 +18,11 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public String toString() {
+        return PieceType.PAWN.toString();
+    }
+
+    @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
         for (int moveOffset : POSSIBLE_MOVES_COORDINATE){
