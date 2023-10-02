@@ -2,6 +2,8 @@ package com.chess.game.Board;
 
 import com.chess.game.PieceColor;
 import com.chess.game.Pieces.*;
+import com.chess.game.Player.BlackSidePlayer;
+import com.chess.game.Player.WhiteSidePlayer;
 
 import java.util.*;
 
@@ -10,6 +12,8 @@ public class Board {
     private static List<Tile> gameBoard;
 
     private Collection<Piece> activeWhitePieces;
+    private WhiteSidePlayer whiteSidePlayer;
+    private BlackSidePlayer blackSidePlayer;
     private Collection<Piece> activeBlackPieces;
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
@@ -17,6 +21,8 @@ public class Board {
         this.activeBlackPieces = calculateActivePieces( this.gameBoard, PieceColor.WHITE  );
         List<Move> whitePiecesLegalMoves = calculateLegalMoves(this.activeWhitePieces);
         List<Move> blackPiecesLegalMoves = calculateLegalMoves(this.activeBlackPieces);
+        this.whiteSidePlayer = new WhiteSidePlayer(this, activeWhitePieces, activeBlackPieces);
+        this.blackSidePlayer = new BlackSidePlayer(this, activeWhitePieces, activeBlackPieces);
     }
 
     @Override

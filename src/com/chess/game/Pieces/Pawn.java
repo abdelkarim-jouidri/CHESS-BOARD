@@ -30,7 +30,6 @@ public class Pawn extends Piece{
             if(!BoardUtils.isValidCoordinate(destinationCoordinate)){
                 continue;
             }
-            else {
                 Tile targetTile = Board.getTile(destinationCoordinate);
                 if (!targetTile.isTileOccupied() && moveOffset == 8){
                     // MORE WORK TO DO HERE (promotions) !!!
@@ -52,7 +51,6 @@ public class Pawn extends Piece{
                     legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, Board.getTile(destinationCoordinate).getPiece()));
                 }
 
-            }
         }
         return legalMoves;
     }
