@@ -14,7 +14,7 @@ public class Queen extends Piece{
 
     int [] POSSIBLE_MOVES_COORDINATES = {-9, -8, -7,  -1, 1, 7, 8, 9 };
     public Queen(int piecePosition, PieceColor pieceColor) {
-        super(piecePosition, pieceColor);
+        super(PieceType.QUEEN, piecePosition, pieceColor);
     }
 
     @Override

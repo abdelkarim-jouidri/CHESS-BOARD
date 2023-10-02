@@ -13,7 +13,7 @@ import java.util.List;
 public class Rook extends Piece{
     int [] POSSIBLE_MOVES_COORDINATES = {-8, -1, 1, 8};
     public Rook(int piecePosition, PieceColor pieceColor) {
-        super(piecePosition, pieceColor);
+        super(PieceType.ROOK, piecePosition, pieceColor);
     }
 
     @Override

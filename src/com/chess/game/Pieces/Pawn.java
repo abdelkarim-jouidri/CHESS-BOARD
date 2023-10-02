@@ -14,7 +14,7 @@ public class Pawn extends Piece{
 
     int [] POSSIBLE_MOVES_COORDINATE = {7, 8, 9, 16};
     public Pawn(int piecePosition, PieceColor pieceColor) {
-        super(piecePosition, pieceColor);
+        super(PieceType.PAWN, piecePosition, pieceColor);
     }
 
     @Override

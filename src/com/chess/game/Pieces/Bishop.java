@@ -14,7 +14,7 @@ public class Bishop extends Piece{
     private static int[] POSSIBLE_MOVES_DIRECTION_COORDINATES = {-7,-9, 7, 9 };
 
     public Bishop(int piecePosition, PieceColor pieceColor) {
-        super(piecePosition, pieceColor);
+        super(PieceType.BISHOP, piecePosition, pieceColor);
     }
 
     @Override

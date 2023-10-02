@@ -15,6 +15,10 @@ public abstract class Move {
         this.destinationCoordinate = destinationCoordinate;
     }
 
+    public int getDestinationCoordinate() {
+        return destinationCoordinate;
+    }
+
     public static class AttackMove extends Move{
 
         private Piece attackedPiece;
