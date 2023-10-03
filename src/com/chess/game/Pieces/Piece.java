@@ -23,6 +23,7 @@ public abstract class Piece {
     }
 
     public abstract Collection<Move> calculateLegalMoves(Board board);
+    public abstract Piece movedPiece(Move move);
 
     public  PieceColor getPieceColor(){
         return this.pieceColor;

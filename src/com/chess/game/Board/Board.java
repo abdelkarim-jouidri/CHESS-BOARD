@@ -3,6 +3,7 @@ package com.chess.game.Board;
 import com.chess.game.PieceColor;
 import com.chess.game.Pieces.*;
 import com.chess.game.Player.BlackSidePlayer;
+import com.chess.game.Player.Player;
 import com.chess.game.Player.WhiteSidePlayer;
 
 import java.text.CollationElementIterator;
@@ -16,6 +17,10 @@ public class Board {
     private WhiteSidePlayer whiteSidePlayer;
     private BlackSidePlayer blackSidePlayer;
     private Collection<Piece> activeBlackPieces;
+
+
+    private Player currentPlayer;
+
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
         this.activeWhitePieces = calculateActivePieces( this.gameBoard, PieceColor.WHITE  );
@@ -24,6 +29,7 @@ public class Board {
         List<Move> blackPiecesLegalMoves = calculateLegalMoves(this.activeBlackPieces);
         this.whiteSidePlayer = new WhiteSidePlayer(this, whitePiecesLegalMoves, blackPiecesLegalMoves);
         this.blackSidePlayer = new BlackSidePlayer(this, blackPiecesLegalMoves, whitePiecesLegalMoves);
+        this.currentPlayer = builder.nextMovePlayer.choosePlayer(this.whiteSidePlayer, this.blackSidePlayer);
     }
 
     @Override
@@ -37,6 +43,10 @@ public class Board {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
     public Collection<Piece> getActiveWhitePieces(){

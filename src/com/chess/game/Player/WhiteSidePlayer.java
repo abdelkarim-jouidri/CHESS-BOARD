@@ -8,9 +8,11 @@ import com.chess.game.Pieces.Piece;
 import java.util.Collection;
 
 public class WhiteSidePlayer extends Player{
+    private PieceColor playersSide;
 
     public WhiteSidePlayer(Board board, Collection<Move> whiteLegalMoves, Collection<Move> blackLegalMoves) {
         super(board, whiteLegalMoves, blackLegalMoves);
+        this.playersSide = PieceColor.WHITE;
     }
     @Override
     public Collection<Piece> getActivePieces() {
@@ -20,5 +22,10 @@ public class WhiteSidePlayer extends Player{
     @Override
     public PieceColor getSideColorOfPlayer() {
         return PieceColor.WHITE;
+    }
+
+    @Override
+    public Player getOpponent() {
+        return null;
     }
 }

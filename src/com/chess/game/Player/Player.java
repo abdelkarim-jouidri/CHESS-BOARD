@@ -17,11 +17,20 @@ public abstract class Player {
 
     private boolean isKingInCheck;
 
+
     public Player(Board board,  Collection<Move> legalMoves, Collection<Move> opponentLegalMoves) {
         this.board = board;
         this.playerKing = getKingPiece();
         this.legalMoves = legalMoves;
-        this.isKingInCheck =  calculateAttackMovesOnPiece(this.playerKing.getPosition(),opponentLegalMoves ).isEmpty();
+        this.isKingInCheck =  !calculateAttackMovesOnPiece(this.playerKing.getPosition(),opponentLegalMoves ).isEmpty();
+    }
+
+    public Collection<Move> getLegalMoves(){
+        return this.legalMoves;
+    }
+
+    public King getPlayerKing() {
+        return playerKing;
     }
 
     private King getKingPiece() {
@@ -33,21 +42,43 @@ public abstract class Player {
     throw new RuntimeException("INVALID BOARD, missing king");
     }
 
-    public abstract Collection<Piece> getActivePieces();
 
-    public abstract PieceColor getSideColorOfPlayer();
 
     public boolean inCheck(){
         //for when the king is under attack
-        //with more logic to go in here
-        return false;
+        return this.isKingInCheck;
     }
 
     public boolean inCheckMate(){
         //end of game
         //with more logic to go in here
-        return false;
+        return this.isKingInCheck && !kingHasEscapeMove();
     }
+
+    protected boolean kingHasEscapeMove() {
+        for(Move move : this.legalMoves){
+            TransitionMove transitionMove = makeMove(move);
+            if (transitionMove.getMoveStatus().isDone());
+        }
+    }
+
+    private TransitionMove makeMove(Move move) {
+        if(!isMoveLegal(move)){
+            return new TransitionMove(this.board, move, MoveStatus.ILLEGAL_MOVE);
+        }
+
+        Board transitionBoard = move.execute();
+        Collection<Move> attackMovesOnKing = calculateAttackMovesOnPiece(transitionBoard.getCurrentPlayer().getOpponent().getPlayerKing().getPosition()
+                , transitionBoard.getCurrentPlayer().getLegalMoves());
+
+        if (!attackMovesOnKing.isEmpty()){
+            return new TransitionMove(this.board, move, MoveStatus.PLAYER_IS_IN_CHECK);
+        }
+
+        return new TransitionMove(transitionBoard, move, MoveStatus.DONE);
+
+    }
+
 
     public boolean isKingCastled(){
         // did the king consume the castling option
@@ -69,4 +100,9 @@ public abstract class Player {
         }
         return attackMoves;
     }
+
+    public abstract Collection<Piece> getActivePieces();
+
+    public abstract PieceColor getSideColorOfPlayer();
+    public abstract Player getOpponent();
 }

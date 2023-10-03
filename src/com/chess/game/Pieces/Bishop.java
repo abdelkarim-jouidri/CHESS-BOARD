@@ -43,6 +43,11 @@ public class Bishop extends Piece{
         return legalMoves;
     }
 
+    @Override
+    public Bishop movedPiece(Move move) {
+        return new Bishop(move.getDestinationCoordinate(), move.getToBeMovedPiece().getPieceColor());
+    }
+
     private static boolean isAtFirstColumnExcludedPosition(int currentPos, int candidateOffset){
 
         return BoardUtils.FIRST_COLUMN[currentPos] && (candidateOffset == 7 ||candidateOffset == -9);
