@@ -28,7 +28,7 @@ public class Rook extends Piece{
                     if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset)){
                         break;
                     }
-                    Tile targetTile = Board.getTile(destinationCoordinate);
+                    Tile targetTile = board.getTile(destinationCoordinate);
                     if (!targetTile.isTileOccupied()){
                         legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
                     }
@@ -45,6 +45,11 @@ public class Rook extends Piece{
         }
     return legalMoves;
 
+    }
+
+    @Override
+    public Rook movedPiece(Move move) {
+        return new Rook(move.getDestinationCoordinate(), move.getToBeMovedPiece().getPieceColor());
     }
 
     @Override

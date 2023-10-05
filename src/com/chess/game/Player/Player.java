@@ -22,7 +22,8 @@ public abstract class Player {
         this.board = board;
         this.playerKing = getKingPiece();
         this.legalMoves = legalMoves;
-        this.isKingInCheck =  !calculateAttackMovesOnPiece(this.playerKing.getPosition(),opponentLegalMoves ).isEmpty();
+        this.legalMoves.addAll(calculateKingsCastles(legalMoves, opponentLegalMoves));
+        this.isKingInCheck =  !calculateAttackMovesOnTile(this.playerKing.getPosition(),opponentLegalMoves ).isEmpty();
     }
 
     public Collection<Move> getLegalMoves(){
@@ -60,6 +61,7 @@ public abstract class Player {
             TransitionMove transitionMove = makeMove(move);
             if (transitionMove.getMoveStatus().isDone());
         }
+        return true;
     }
 
     private TransitionMove makeMove(Move move) {
@@ -68,7 +70,7 @@ public abstract class Player {
         }
 
         Board transitionBoard = move.execute();
-        Collection<Move> attackMovesOnKing = calculateAttackMovesOnPiece(transitionBoard.getCurrentPlayer().getOpponent().getPlayerKing().getPosition()
+        Collection<Move> attackMovesOnKing = calculateAttackMovesOnTile(transitionBoard.getCurrentPlayer().getOpponent().getPlayerKing().getPosition()
                 , transitionBoard.getCurrentPlayer().getLegalMoves());
 
         if (!attackMovesOnKing.isEmpty()){
@@ -91,7 +93,7 @@ public abstract class Player {
     }
 
 
-    public Collection<Move> calculateAttackMovesOnPiece(int piecePositionCoordinate , Collection<Move> moves ) {
+    public static Collection<Move> calculateAttackMovesOnTile(int piecePositionCoordinate , Collection<Move> moves ) {
         List<Move> attackMoves = new ArrayList<>();
         for (Move move : moves){
             if(piecePositionCoordinate == move.getDestinationCoordinate()){
@@ -105,4 +107,7 @@ public abstract class Player {
 
     public abstract PieceColor getSideColorOfPlayer();
     public abstract Player getOpponent();
+
+
+    public abstract Collection<Move> calculateKingsCastles(Collection<Move> playerLegalMoves, Collection<Move> opponentLegalMoves);
 }

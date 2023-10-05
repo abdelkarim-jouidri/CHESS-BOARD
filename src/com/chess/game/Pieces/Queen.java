@@ -29,7 +29,7 @@ public class Queen extends Piece{
                     if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinateOffset)){
                         break;
                     }
-                    Tile targetTile = Board.getTile(destinationCoordinate);
+                    Tile targetTile = board.getTile(destinationCoordinate);
                     if (!targetTile.isTileOccupied()){
                         legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
                     }
@@ -45,6 +45,12 @@ public class Queen extends Piece{
             }
         }
         return legalMoves;
+
+    }
+
+    @Override
+    public Queen movedPiece(Move move) {
+        return new Queen(move.getDestinationCoordinate(), move.getToBeMovedPiece().getPieceColor());
 
     }
 

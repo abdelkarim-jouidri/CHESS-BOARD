@@ -32,7 +32,7 @@ public class King extends Piece{
                 continue;
             }
             if(BoardUtils.isValidCoordinate(destinationCoodinate)){
-                Tile targetTile = Board.getTile(destinationCoodinate);
+                Tile targetTile = board.getTile(destinationCoodinate);
                 Piece pieceAtTargetTile = targetTile.getPiece();
 
                 if(!targetTile.isTileOccupied()){
@@ -47,6 +47,11 @@ public class King extends Piece{
         }
 
         return legalMoves;
+    }
+
+    @Override
+    public King movedPiece(Move move) {
+        return new King(move.getDestinationCoordinate(), move.getToBeMovedPiece().getPieceColor());
     }
 
     public static boolean isAtFirstColumnExcludedPosition(int currentPos, int candidateOffset){

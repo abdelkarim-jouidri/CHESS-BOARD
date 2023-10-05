@@ -30,7 +30,7 @@ public class Pawn extends Piece{
             if(!BoardUtils.isValidCoordinate(destinationCoordinate)){
                 continue;
             }
-                Tile targetTile = Board.getTile(destinationCoordinate);
+                Tile targetTile = board.getTile(destinationCoordinate);
                 if (!targetTile.isTileOccupied() && moveOffset == 8){
                     // MORE WORK TO DO HERE (promotions) !!!
                     legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
@@ -39,20 +39,25 @@ public class Pawn extends Piece{
                         (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack())
                         || BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isWhite() ){
                     int behindDestinationCoordinate = this.piecePosition + this.pieceColor.getDirection()*8;
-                    if(!Board.getTile(destinationCoordinate).isTileOccupied() && !Board.getTile(behindDestinationCoordinate).isTileOccupied()){
+                    if(!board.getTile(destinationCoordinate).isTileOccupied() && !board.getTile(behindDestinationCoordinate).isTileOccupied()){
                         legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
                     }
                 }
 
                 else if (!isAtFirstColumnExcludedPosition(this.piecePosition, moveOffset) && moveOffset == 9){
-                        legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, Board.getTile(destinationCoordinate).getPiece()));
+                        legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, board.getTile(destinationCoordinate).getPiece()));
                 }
                 else if (!isAtEighthColumnExcludedPosition(this.piecePosition, moveOffset) && moveOffset == 7){
-                    legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, Board.getTile(destinationCoordinate).getPiece()));
+                    legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, board.getTile(destinationCoordinate).getPiece()));
                 }
 
         }
         return legalMoves;
+    }
+
+    @Override
+    public Pawn movedPiece(Move move) {
+        return new Pawn(move.getDestinationCoordinate(), move.getToBeMovedPiece().getPieceColor());
     }
 
     static boolean isAtFirstColumnExcludedPosition(int currentPos , int candidateOffset){

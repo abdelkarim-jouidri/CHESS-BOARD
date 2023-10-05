@@ -37,7 +37,7 @@ public class Knight extends Piece{
                 {
                     continue;
                 }
-                Tile possibleTargetTile = Board.getTile(destinationCoordinate);
+                Tile possibleTargetTile = board.getTile(destinationCoordinate);
                 if(!possibleTargetTile.isTileOccupied()){
                     legalMoves.add(new NonAttackMove(board, this, destinationCoordinate));
                 }else {
@@ -51,6 +51,11 @@ public class Knight extends Piece{
             }
         }
         return Collections.unmodifiableList(legalMoves);
+    }
+
+    @Override
+    public Knight movedPiece(Move move) {
+        return new Knight(move.getDestinationCoordinate(), move.getToBeMovedPiece().getPieceColor());
     }
 
     public static boolean isAtFirstColumnExcludedPosition(int currentPos, int candidateOffset){

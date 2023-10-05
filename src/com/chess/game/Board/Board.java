@@ -45,6 +45,14 @@ public class Board {
         return stringBuilder.toString();
     }
 
+    public WhiteSidePlayer getWhiteSidePlayer() {
+        return whiteSidePlayer;
+    }
+
+    public BlackSidePlayer getBlackSidePlayer() {
+        return blackSidePlayer;
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
@@ -122,8 +130,15 @@ public class Board {
         }
     return List.of(tiles);
     }
-    public static Tile getTile(int tilecoordinate){
+    public Tile getTile(int tilecoordinate){
         return gameBoard.get(tilecoordinate);
+    }
+
+    public Iterable<Move> getAllLegalMoves() {
+        List<Move> combinedList = new ArrayList<>();
+        combinedList.addAll(this.whiteSidePlayer.getLegalMoves());
+        combinedList.addAll(this.blackSidePlayer.getLegalMoves());
+        return combinedList;
     }
 
 

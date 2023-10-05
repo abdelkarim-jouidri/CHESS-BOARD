@@ -26,7 +26,7 @@ public class Bishop extends Piece{
                     if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinate) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinate)){
                         break;
                     }
-                    Tile possibleTargetTile = Board.getTile(destinationCoordinate);
+                    Tile possibleTargetTile = board.getTile(destinationCoordinate);
                     if(!possibleTargetTile.isTileOccupied()){
                         legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
                     }

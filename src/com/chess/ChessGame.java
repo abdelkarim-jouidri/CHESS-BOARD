@@ -1,10 +1,12 @@
-package com.chess.game;
+package com.chess;
 
 import com.chess.game.Board.Board;
+import com.chess.gui.Table;
 
 public class ChessGame {
     public static void main(String[] args) {
         Board board = Board.createInitialBoard();
-        System.out.println(board);
+        Table table = new Table();
+
     }
 }
