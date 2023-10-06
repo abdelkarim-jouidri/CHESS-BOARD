@@ -24,7 +24,7 @@ public class Knight extends Piece{
 
     @Override
     public Collection<Move> calculateLegalMoves(Board board){
-        List<Move> legalMoves = new ArrayList<Move>();
+        List<Move> legalMoves = new ArrayList<>();
         int destinationCoordinate;
         for (int moveCoordinate : POSSIBLE_MOVES_COORDINATES){
             destinationCoordinate = this.piecePosition + moveCoordinate;

@@ -45,7 +45,7 @@ public class BoardUtils {
         boolean[] column = new boolean[64];
         do{
             column[columnNumber] = true;
-            columnNumber++;
+            columnNumber+=8;
         }while (columnNumber<64);
         return column;
     }

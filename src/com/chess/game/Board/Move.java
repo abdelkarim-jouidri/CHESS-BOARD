@@ -44,7 +44,6 @@ public abstract class Move {
             System.out.println(piece.getPosition());
             builder.Piece(piece);
         }
-        //this handles moving the moved piece
         builder.Piece(this.toBeMovedPiece.movedPiece(this));
         builder.nextMovePlayer(this.board.getCurrentPlayer().getOpponent().getSideColorOfPlayer());
         return builder.build();

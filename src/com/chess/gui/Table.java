@@ -16,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
@@ -40,6 +42,7 @@ public class Table {
 
         this.chessGameFrame = new JFrame("CHESS");
         this.chessGameFrame.setLayout(new BorderLayout());
+        this.chessGameFrame.setLocationRelativeTo(null);
         this.chessGameFrame.setVisible(true);
         this.chessGameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.boardPanel = new BoardPanel();
@@ -99,7 +102,6 @@ public class Table {
                             }
                         }
                         else {
-                            System.out.println();
                             destinationTile = chessBoard.getTile(tileId);
                             Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
                             TransitionMove transitionMove = chessBoard.getCurrentPlayer().makeMove(move);
@@ -147,6 +149,7 @@ public class Table {
         public void drawTile(Board board){
             assignColorToTile();
             assignTilePieceIcon(board);
+            highlightLegalMoves(board);
             validate();
             repaint();
         }
@@ -185,6 +188,27 @@ public class Table {
                     e.printStackTrace();
                 }
             }
+        }
+
+        private void highlightLegalMoves(Board board){
+            System.out.println("legal moves : \n");
+            for(Move move : pieceLegalMoves(board)){
+                if(move.getDestinationCoordinate() == tileId){
+                    try {
+                        System.out.println(move.getDestinationCoordinate());
+                        add(new JLabel(new ImageIcon(ImageIO.read(new File("chess_pieces/dot/green_dot.png")))));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        private Collection<Move> pieceLegalMoves(Board board) {
+            if(humanMovedPiece !=null && humanMovedPiece.getPieceColor() == board.getCurrentPlayer().getSideColorOfPlayer()){
+                return humanMovedPiece.calculateLegalMoves(board);
+            }
+            return Collections.emptyList();
         }
 
 
