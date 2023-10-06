@@ -24,7 +24,7 @@ public class Board {
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
         this.activeWhitePieces = calculateActivePieces( this.gameBoard, PieceColor.WHITE  );
-        this.activeBlackPieces = calculateActivePieces( this.gameBoard, PieceColor.WHITE  );
+        this.activeBlackPieces = calculateActivePieces( this.gameBoard, PieceColor.BLACK  );
         List<Move> whitePiecesLegalMoves = calculateLegalMoves(this.activeWhitePieces);
         List<Move> blackPiecesLegalMoves = calculateLegalMoves(this.activeBlackPieces);
         this.whiteSidePlayer = new WhiteSidePlayer(this, whitePiecesLegalMoves, blackPiecesLegalMoves);
@@ -134,7 +134,7 @@ public class Board {
         return gameBoard.get(tilecoordinate);
     }
 
-    public Iterable<Move> getAllLegalMoves() {
+    public Collection<Move> getAllLegalMoves() {
         List<Move> combinedList = new ArrayList<>();
         combinedList.addAll(this.whiteSidePlayer.getLegalMoves());
         combinedList.addAll(this.blackSidePlayer.getLegalMoves());

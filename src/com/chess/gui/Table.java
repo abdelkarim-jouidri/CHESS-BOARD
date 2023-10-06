@@ -2,27 +2,39 @@ package com.chess.gui;
 
 import com.chess.game.Board.Board;
 import com.chess.game.Board.BoardUtils;
+import com.chess.game.Board.Move;
+import com.chess.game.Board.Tile;
 import com.chess.game.Pieces.Piece;
+import com.chess.game.Player.TransitionMove;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
+
 public class Table {
     private final Color lightTileColor = Color.decode("#f0dab5");
     private final Color darkTileColor = Color.decode("#b58763");
+
+    private Tile sourceTile;
+    private Tile destinationTile;
+    private Piece humanMovedPiece;
     private static  Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
     private final JFrame chessGameFrame;
     private Board chessBoard;
     private BoardPanel boardPanel;
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
-    private static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-    private static String piecesIconsPath = "C:\\Users\\Youcode\\Desktop\\Java\\Chess\\chess_pieces\\";
+    private static Dimension TILE_PANEL_DIMENSION = new Dimension(5, 5);
+    private static String piecesIconsPath = "chess_pieces/resized/";
     public Table(){
         this.chessBoard = Board.createInitialBoard();
 
@@ -46,6 +58,16 @@ public class Table {
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
         }
+
+        public void drawBoard(Board board){
+            removeAll();
+            for(TilePanel tilePanel : boardTiles){
+                tilePanel.drawTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
     }
 
     private class TilePanel extends JPanel{
@@ -57,7 +79,76 @@ public class Table {
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignColorToTile();
             assignTilePieceIcon(chessBoard);
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(isRightMouseButton(e)){
+                        sourceTile = null;
+                        destinationTile = null;
+                        humanMovedPiece = null;
+                    }
+                    else if(isLeftMouseButton(e)){
+
+                        System.out.println("clicked the left");
+                        if(sourceTile == null){
+                            System.out.println("source tile is null");
+                            sourceTile = chessBoard.getTile(tileId);
+                            humanMovedPiece = sourceTile.getPiece();
+                            if(humanMovedPiece == null){
+                                sourceTile = null;
+                            }
+                        }
+                        else {
+                            System.out.println();
+                            destinationTile = chessBoard.getTile(tileId);
+                            Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
+                            TransitionMove transitionMove = chessBoard.getCurrentPlayer().makeMove(move);
+                            if (transitionMove.getMoveStatus().isDone()){
+                                chessBoard = transitionMove.getTransitionBoard();
+                                System.out.println(chessBoard.getTile(destinationTile.getTileCoordinate()).getPiece().getPosition());
+                                }
+                            if(!transitionMove.getMoveStatus().isDone()){
+                                System.out.println("the move wasnt done");
+                            }
+                            sourceTile = null;
+                            destinationTile = null;
+                            humanMovedPiece = null;
+                        }
+                        SwingUtilities.invokeLater(()->boardPanel.drawBoard(chessBoard));
+                    }
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
+
             validate();
+        }
+
+        public void drawTile(Board board){
+            assignColorToTile();
+            assignTilePieceIcon(board);
+            validate();
+            repaint();
         }
 
         private void assignColorToTile() {
@@ -81,13 +172,9 @@ public class Table {
                 try {
                     SwingUtilities.invokeLater(() -> {
                         try {
-                            System.out.println("path: " + piecesIconsPath + piece.getPieceColor().toString().substring(0, 1) + piece.toString() + ".png");
-                            BufferedImage pieceImage = ImageIO.read(new File("chess_pieces\\resized\\" + piece.getPieceColor().toString().substring(0, 1) + piece.toString() + ".png"));
+                            BufferedImage pieceImage = ImageIO.read(new File(piecesIconsPath + piece.getPieceColor().toString().substring(0, 1) + piece.toString() + ".png"));
                             JLabel pieceLabel = new JLabel(new ImageIcon(pieceImage));
                             add(pieceLabel);
-                            System.out.println("Piece icon assigned successfully");
-
-                            // Repaint the frame to reflect the changes
                             chessGameFrame.revalidate();
                             chessGameFrame.repaint();
                         } catch (IOException e) {

@@ -3,6 +3,7 @@ package com.chess.game.Board;
 import com.chess.game.Pieces.Piece;
 import com.chess.game.Pieces.Rook;
 
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Move {
@@ -38,37 +39,58 @@ public abstract class Move {
                 builder.Piece(piece);
             }
         }
-
+        System.out.println("current player  :"+this.board.getCurrentPlayer().toString()+ "\n");
         for (Piece piece : this.board.getCurrentPlayer().getOpponent().getActivePieces()){
+            System.out.println(piece.getPosition());
             builder.Piece(piece);
         }
         //this handles moving the moved piece
         builder.Piece(this.toBeMovedPiece.movedPiece(this));
         builder.nextMovePlayer(this.board.getCurrentPlayer().getOpponent().getSideColorOfPlayer());
-        builder.build();
-        return this.board;
+        return builder.build();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.toBeMovedPiece.getPosition(), this.destinationCoordinate, this.toBeMovedPiece.hashCode());
+        int result = 1;
+        result = 31 * result + this.destinationCoordinate;
+        if (this.toBeMovedPiece != null) {
+            result = 31 * result + this.toBeMovedPiece.hashCode();
+            result = 31 * result + this.toBeMovedPiece.getPosition();
+        }
+        return result;
     }
+
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj){
+        if (this == obj) {
             return true;
         }
 
-        if(!(obj instanceof Move)){
+        if (!(obj instanceof Move)) {
             return false;
         }
 
         Move otherMove = (Move) obj;
+        Piece thisPiece = getToBeMovedPiece();
+        Piece otherPiece = otherMove.getToBeMovedPiece();
+
+        // Ensure that both pieces are not null before comparing
+        if (thisPiece == null || otherPiece == null) {
+            return false;
+        }
+
         return otherMove.getCurrentCoordinate() == getCurrentCoordinate()
                 && getDestinationCoordinate() == otherMove.getDestinationCoordinate()
-                && getToBeMovedPiece() == otherMove.getToBeMovedPiece();
+                && Objects.equals(thisPiece, otherPiece);
     }
+
 
     public boolean isAttackMove(){
         return false;
@@ -220,12 +242,14 @@ public abstract class Move {
             throw  new RuntimeException("You can't instatiate this class");
         }
 
-        public static Move makeMove(Board board, int currentCoordinate, int desctinationCoordinate){
+        public static Move createMove(Board board, int currentCoordinate, int desctinationCoordinate){
             for (Move move : board.getAllLegalMoves()){
                 if(move.getToBeMovedPiece().getPosition() == currentCoordinate
                         && move.getDestinationCoordinate() == desctinationCoordinate){
+                    System.out.println("success in create move method");
                     return move;
                 }
+
             }
             return NULL_MOVE;
         }

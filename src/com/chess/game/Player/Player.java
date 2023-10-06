@@ -64,8 +64,9 @@ public abstract class Player {
         return true;
     }
 
-    private TransitionMove makeMove(Move move) {
+    public TransitionMove makeMove(Move move) {
         if(!isMoveLegal(move)){
+            System.out.println("ILLEGAL MOVE");
             return new TransitionMove(this.board, move, MoveStatus.ILLEGAL_MOVE);
         }
 
@@ -74,8 +75,12 @@ public abstract class Player {
                 , transitionBoard.getCurrentPlayer().getLegalMoves());
 
         if (!attackMovesOnKing.isEmpty()){
+            System.out.println("players is in check");
+
             return new TransitionMove(this.board, move, MoveStatus.PLAYER_IS_IN_CHECK);
         }
+
+
 
         return new TransitionMove(transitionBoard, move, MoveStatus.DONE);
 
@@ -83,7 +88,7 @@ public abstract class Player {
 
 
     public boolean isKingCastled(){
-        // did the king consume the castling option
+        // did the king consume the castling option ?
         return false;
     }
 

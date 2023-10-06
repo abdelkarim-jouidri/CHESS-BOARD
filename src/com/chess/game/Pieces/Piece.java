@@ -43,7 +43,7 @@ public abstract class Piece {
 
         @Override
         public int hashCode() {
-            return Objects.hash(pieceColor, pieceColor, pieceType, isFirstMove);
+            return Objects.hash(pieceColor, piecePosition, pieceType, isFirstMove);
         }
 
     public abstract Collection<Move> calculateLegalMoves(Board board);
