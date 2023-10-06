@@ -15,7 +15,7 @@ public abstract class Piece {
 
     protected final PieceType pieceType;
 
-    protected final boolean isFirstMove ;
+    protected boolean isFirstMove ;
 
     public Piece(PieceType pieceType, int piecePosition, PieceColor pieceColor) {
         this.pieceType = pieceType;
@@ -45,6 +45,10 @@ public abstract class Piece {
         public int hashCode() {
             return Objects.hash(pieceColor, piecePosition, pieceType, isFirstMove);
         }
+
+    public void setFirstMove(boolean flag){
+        this.isFirstMove = flag;
+    }
 
     public abstract Collection<Move> calculateLegalMoves(Board board);
     public abstract Piece movedPiece(Move move);

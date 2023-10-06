@@ -30,10 +30,10 @@ public class Knight extends Piece{
             destinationCoordinate = this.piecePosition + moveCoordinate;
             if(BoardUtils.isValidCoordinate(destinationCoordinate)){
                 //Make sure the piece is not at a prohibited position
-                if(isAtFirstColumnExcludedPosition(this.piecePosition, destinationCoordinate)
-                        || isAtSecondColumnExcludedPosition(this.piecePosition, destinationCoordinate)
-                        || isAtSeventhColumnExcludedPosition(this.piecePosition, destinationCoordinate)
-                        || isAtEighthColumnExcludedPosition(this.piecePosition, destinationCoordinate))
+                if(isAtFirstColumnExcludedPosition(this.piecePosition, moveCoordinate)
+                        || isAtSecondColumnExcludedPosition(this.piecePosition, moveCoordinate)
+                        || isAtSeventhColumnExcludedPosition(this.piecePosition, moveCoordinate)
+                        || isAtEighthColumnExcludedPosition(this.piecePosition, moveCoordinate))
                 {
                     continue;
                 }

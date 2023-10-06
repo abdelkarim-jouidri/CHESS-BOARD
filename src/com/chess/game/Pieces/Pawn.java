@@ -35,23 +35,18 @@ public class Pawn extends Piece{
                     // MORE WORK TO DO HERE (promotions) !!!
                     legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
                 }
-                else if (moveOffset == 16 && this.isFirstMove() &&
-                        (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack())
-                        || BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isWhite() ){
-                    int behindDestinationCoordinate = this.piecePosition + this.pieceColor.getDirection()*8;
-                    if(!board.getTile(destinationCoordinate).isTileOccupied() && !board.getTile(behindDestinationCoordinate).isTileOccupied()){
-                        legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
-                    }
-                }
-
-                else if (!isAtFirstColumnExcludedPosition(this.piecePosition, moveOffset) && moveOffset == 9){
-                        legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, board.getTile(destinationCoordinate).getPiece()));
-                }
-                else if (!isAtEighthColumnExcludedPosition(this.piecePosition, moveOffset) && moveOffset == 7){
-                    legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, board.getTile(destinationCoordinate).getPiece()));
+                else if (!targetTile.isTileOccupied()
+                        && moveOffset == 16
+                        && this.isFirstMove()
+                        && ((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceColor().isWhite())
+                        || BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceColor().isBlack()))
+                        {
+                    legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
+                    this.isFirstMove = false;
                 }
 
         }
+
         return legalMoves;
     }
 

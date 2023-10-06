@@ -31,6 +31,7 @@ public class BoardUtils {
         return coordinate < 64 && coordinate >= 0;
     }
 
+
     private static boolean[] initRow(int rowNumber) {
         boolean[] row = new boolean[NUM_TILES];
         do {
@@ -45,7 +46,7 @@ public class BoardUtils {
         boolean[] column = new boolean[64];
         do{
             column[columnNumber] = true;
-            columnNumber+=8;
+            columnNumber+=NUM_TILES_PER_ROW;
         }while (columnNumber<64);
         return column;
     }

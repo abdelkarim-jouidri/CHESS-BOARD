@@ -191,11 +191,9 @@ public class Table {
         }
 
         private void highlightLegalMoves(Board board){
-            System.out.println("legal moves : \n");
             for(Move move : pieceLegalMoves(board)){
                 if(move.getDestinationCoordinate() == tileId){
                     try {
-                        System.out.println(move.getDestinationCoordinate());
                         add(new JLabel(new ImageIcon(ImageIO.read(new File("chess_pieces/dot/green_dot.png")))));
                     }catch (IOException e){
                         e.printStackTrace();
