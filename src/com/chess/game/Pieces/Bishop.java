@@ -17,31 +17,67 @@ public class Bishop extends Piece{
         super(PieceType.BISHOP, piecePosition, pieceColor);
     }
 
+//    @Override
+//    public Collection<Move> calculateLegalMoves(Board board) {
+//        List<Move> legalMoves = new ArrayList<Move>();
+//        for(int moveCoordinate : POSSIBLE_MOVES_DIRECTION_COORDINATES){
+//                int destinationCoordinate = this.piecePosition ;
+//                while (BoardUtils.isValidCoordinate(destinationCoordinate)){
+//                    if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinate) ||
+//                            isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinate)){
+//                        break;
+//                    }
+//                    System.out.println("destination coordinate : "+ destinationCoordinate);
+//                    Tile possibleTargetTile = board.getTile(destinationCoordinate);
+//                    if(!possibleTargetTile.isTileOccupied()){
+//                        legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
+//                    }
+//                    else {
+//                        Piece pieceAtOccupiedTile = possibleTargetTile.getPiece();
+//                        PieceColor colorOfPieceAtTile = pieceAtOccupiedTile.getPieceColor();
+//                        if(this.getPieceColor() != colorOfPieceAtTile){
+//                            legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, pieceAtOccupiedTile));
+//                        }
+//                        break; // because this is the only possible move on this direction
+//                    }
+//                }
+//        }
+//        return legalMoves;
+//    }
+
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
-        List<Move> legalMoves = new ArrayList<Move>();
-        for(int moveCoordinate : POSSIBLE_MOVES_DIRECTION_COORDINATES){
-                int destinationCoordinate = this.piecePosition;
-                while (BoardUtils.isValidCoordinate(destinationCoordinate)){
-                    if(isAtEighthColumnExcludedPosition(destinationCoordinate, moveCoordinate) || isAtFirstColumnExcludedPosition(destinationCoordinate, moveCoordinate)){
-                        break;
-                    }
-                    Tile possibleTargetTile = board.getTile(destinationCoordinate);
-                    if(!possibleTargetTile.isTileOccupied()){
+        List<Move> legalMoves = new ArrayList<>();
+        for(int candidateOffset : POSSIBLE_MOVES_DIRECTION_COORDINATES){
+            int destinationCoordinate = this.piecePosition;
+            while (BoardUtils.isValidCoordinate(destinationCoordinate)){
+                System.out.println("inside the while loop");
+                if(isAtFirstColumnExcludedPosition(destinationCoordinate, candidateOffset) ||
+                        isAtEighthColumnExcludedPosition(destinationCoordinate, candidateOffset)){
+                    break;
+                }
+                destinationCoordinate += candidateOffset;
+
+                if(BoardUtils.isValidCoordinate(destinationCoordinate)){
+                    Tile destinationTile = board.getTile(destinationCoordinate);
+                    if(!destinationTile.isTileOccupied()){
                         legalMoves.add(new Move.NonAttackMove(board, this, destinationCoordinate));
                     }
                     else {
-                        Piece pieceAtOccupiedTile = possibleTargetTile.getPiece();
-                        PieceColor colorOfPieceAtTile = pieceAtOccupiedTile.getPieceColor();
-                        if(this.getPieceColor() != colorOfPieceAtTile){
-                            legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, pieceAtOccupiedTile));
+                        Piece pieceOnDestinationTile = destinationTile.getPiece();
+                        PieceColor pieceColor = pieceOnDestinationTile.getPieceColor();
+                        if(this.getPieceColor() != pieceColor){
+                            legalMoves.add(new Move.AttackMove(board, this, destinationCoordinate, pieceOnDestinationTile));
                         }
-                        break; // because this is the only possible move on this direction
+                        break;
                     }
                 }
+            }
         }
         return legalMoves;
     }
+
+
 
     @Override
     public Bishop movedPiece(Move move) {
